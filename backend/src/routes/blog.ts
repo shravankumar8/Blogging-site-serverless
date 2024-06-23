@@ -68,6 +68,10 @@ blogRoute.post("/blog", async (c) => {
   return c.json({ message: "saved the  some post", postId: blog.id});
 });
 
+
+
+
+
 // below route is to update the posts
 blogRoute.put("/blog", async(c) => {
     const prisma=new PrismaClient({
@@ -100,6 +104,16 @@ blogRoute.get("/blog/bulk", async (c) => {
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
   const posts = await prisma.post.findMany({where:{published: true}});
+  return c.json({ message: "easy", posts });
+});
+blogRoute.get("/blog/my", async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+  console.log(c.get("userId"));
+  const posts = await prisma.post.findMany({
+    where: { authorId: c.get("userId") },
+  });
   return c.json({ message: "easy", posts });
 });
 
