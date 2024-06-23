@@ -1,29 +1,30 @@
-import { Hono } from 'hono'
+import { Hono } from "hono";
+import { PrismaClient } from "@prisma/client/edge";
+import { withAccelerate } from "@prisma/extension-accelerate";
+import { decode, verify, sign } from "hono/jwt";
+import { userRoute } from "./routes/user";
+import { blogRoute } from "./routes/blog";
 
-const app = new Hono()
+const app = new Hono<{
+  Variables: {
+    userId: string
+    
+  };
+  Bindings: {
+    DATABASE_URL: string;
+    JWT_SECRET: string;
+  };
+}>();
 // here c in callback everything req,res,etc
-app.get('/', (c) => {
-  return c.text('Hello Hono!')
-})
-app.post('/api/v1/user/signup', (c) => {
-  return c.text('user signup')
-})
-app.post("/api/v1/user/signin", (c) => {
-  return c.text("user sigin");
-});
-app.post("/api/v1/blog", (c) => {
-  return c.text("create blog");
-});
-app.put('/api/v1/blog', (c) => {
-  return c.text('write update a blog!')
-})
-app.get('/api/v1/blog/:id', (c) => {
-  const id=c.req.param("id")
-  console.log(id)
-  return c.text('get a specific blog')
-})
-app.get('/api/v1/blog/bulk', (c) => {
-  return c.text('blog bulk route')
-})
 
-export default app
+app.route("/api/v1/user",userRoute)
+
+app.route("/api/v1",blogRoute)
+
+
+
+// writing a middle ware here for all the rouutes which are associated with blog routes
+
+
+
+export default app;
