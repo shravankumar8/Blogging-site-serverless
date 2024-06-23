@@ -50,7 +50,7 @@ blogRoute.post("/blog", async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
-
+  const userId = c.get("userId");
   const body = await c.req.json();
 
   // control is reached here only if the user is authenticaed
@@ -63,8 +63,8 @@ blogRoute.post("/blog", async (c) => {
   });
 
  
-  console.log(userID+"has published some fuckinf");
-  return c.text(userID);
+  console.log(userId + "has published some post");
+  return c.text(userId);
 });
 blogRoute.put("/blog", (c) => {
   return c.text("write update a blog!");
