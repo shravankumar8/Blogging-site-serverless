@@ -59,21 +59,67 @@ blogRoute.post("/blog", async (c) => {
       title: body.title,
       content: body.content,
       authorId: c.get("userId"),
+      published:body.published
     },
   });
 
  
   console.log(userId + "has published some post");
-  return c.text(userId);
+  return c.json({ message: "saved the  some post", postId: blog.id});
 });
-blogRoute.put("/blog", (c) => {
-  return c.text("write update a blog!");
+
+// below route is to update the posts
+blogRoute.put("/blog", async(c) => {
+    const prisma=new PrismaClient({
+        datasourceUrl:c.env.DATABASE_URL
+    })
+    const userId=c.get("userId")
+    try {
+        const body=await c.req.json()
+        console.log(body.id,"body.id")
+       await prisma.post.update({
+            where:{
+                id:body.id,
+                authorId:userId
+            },data:{
+                title:body.title,
+                content:body.content
+            }
+        })
+        return c.json({message:"updated successfully"})
+    } catch (error) {
+        console.log(error);
+        return c.json({message :"you did something wrong say sorry "})
+
+        
+    }
+
 });
-blogRoute.get("/blog/:id", (c) => {
+blogRoute.get("/blog/bulk", async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+  const posts = await prisma.post.findMany({where:{published: true}});
+  return c.json({ message: "easy", posts });
+});
+
+
+
+
+
+blogRoute.get("/blog/:id", async(c) => {
   const id = c.req.param("id");
-  console.log(id);
-  return c.text("get a specific blog");
-});
-blogRoute.get("/blog/bulk", (c) => {
-  return c.text("blog bulk route");
+//   console.log(id)
+const prisma=new PrismaClient({
+    datasourceUrl:c.env.DATABASE_URL
+}).$extends(withAccelerate())
+
+const post = await prisma.post.findUnique({
+    where:{
+        id:id,
+
+    }
+})
+
+  return c.json({post});
 });
