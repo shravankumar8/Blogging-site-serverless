@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { decode, verify, sign } from "hono/jwt";
-
+import { creatBlogInput, UpdateBlogInput } from "@shravankumar8/medium-common";
 export const blogRoute = new Hono<{
   Variables: {
     userId: string;
@@ -52,6 +52,13 @@ blogRoute.post("/blog", async (c) => {
   }).$extends(withAccelerate());
   const userId = c.get("userId");
   const body = await c.req.json();
+body.authorId=userId;
+   const { success,error } = creatBlogInput.safeParse(body);
+   if (!success) {
+    console.log(error)
+     c.status(400);
+     return c.json({ message: "invalid input" });
+   }
 
   // control is reached here only if the user is authenticaed
   const blog = await prisma.post.create({
@@ -59,7 +66,7 @@ blogRoute.post("/blog", async (c) => {
       title: body.title,
       content: body.content,
       authorId: c.get("userId"),
-      published:body.published
+      
     },
   });
 
@@ -78,9 +85,15 @@ blogRoute.put("/blog", async(c) => {
         datasourceUrl:c.env.DATABASE_URL
     })
     const userId=c.get("userId")
+    const body=await c.req.json()
+    console.log(body.id,"body.id")
+   const { success } = UpdateBlogInput.safeParse(body);
+   if (!success) {
+     c.status(400);
+     return c.json({ message: "invalid input" });
+   }
+
     try {
-        const body=await c.req.json()
-        console.log(body.id,"body.id")
        await prisma.post.update({
             where:{
                 id:body.id,
