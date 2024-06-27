@@ -19,7 +19,10 @@ const app = new Hono<{
 
 app.route("/api/v1/user",userRoute)
 
-app.route("/api/v1",blogRoute)
+app.route("/api/v1/blog", blogRoute);
+app.get("/", async(c)=>{
+ return c.text("everything works like a charm ")
+});
 
 
 
