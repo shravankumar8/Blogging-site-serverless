@@ -4,6 +4,8 @@ import { withAccelerate } from "@prisma/extension-accelerate";
 import { decode, verify, sign } from "hono/jwt";
 import { userRoute } from "./routes/user";
 import { blogRoute } from "./routes/blog";
+import { cors } from "hono/cors";
+
 
 const app = new Hono<{
   Variables: {
@@ -13,10 +15,11 @@ const app = new Hono<{
   Bindings: {
     DATABASE_URL: string;
     JWT_SECRET: string;
+    
   };
 }>();
 // here c in callback everything req,res,etc
-
+app.use("*",cors())
 app.route("/api/v1/user",userRoute)
 
 app.route("/api/v1/blog", blogRoute);
