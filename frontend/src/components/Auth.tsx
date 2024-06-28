@@ -1,16 +1,40 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { InputComp } from "./InputComp";
 import { useState } from "react";
 import { signinInput, signupInput } from "@shravankumar8/medium-common";
-
+import axios, { AxiosResponse } from "axios";
+import { BACKEND_URL } from "../config";
 export const AuthComp = ({ type }: { type: "signin" | "signup" }) => {
-  const [authInputes, setAuthInputes] = useState<signupInput|signupInput>({
+  const navigate=useNavigate()
+  const [authInputes, setAuthInputes] = useState<signupInput|signinInput>({
     email: "",
     password: "",
     name: "", 
   });
 
-  function sendRequest(){}
+  async function sendRequest(){
+try {
+
+  const response: AxiosResponse = await axios.post(
+    `${BACKEND_URL}/api/v1/user/signup`,
+    {
+      ...authInputes,
+    }
+  );
+  const jwt:string=response.data
+  console.log("response"+response)
+  localStorage.setItem("Authorization",jwt)
+  if(response.status !== 200){
+    alert("error while signingup")
+  }
+  navigate("/blog")  
+} catch (error) {
+  console.log(error)
+  alert("error while signing up")
+}
+
+    console.log("Sending request")
+  }
 
   return (
     <div className="justify-center ">
@@ -37,7 +61,7 @@ export const AuthComp = ({ type }: { type: "signin" | "signup" }) => {
             placeholder={"Name"}
             isPassword={false}
             onChange={(e) => {
-              console.log(e.target.value);
+              setAuthInputes({ ...authInputes, name: e.target.value });
             }}
           />
         )}
@@ -47,6 +71,7 @@ export const AuthComp = ({ type }: { type: "signin" | "signup" }) => {
           placeholder={"Email"}
           isPassword={false}
           onChange={(e) => {
+            setAuthInputes({ ...authInputes, email: e.target.value });
             console.log(e.target.value);
           }}
         />
@@ -56,12 +81,14 @@ export const AuthComp = ({ type }: { type: "signin" | "signup" }) => {
           placeholder={"Password"}
           isPassword={false}
           onChange={(e) => {
-            console.log(e.target.value);
+            setAuthInputes({ ...authInputes, password: e.target.value });
           }}
         />
+        {JSON.stringify(authInputes)}
         {type === "signin" ? <ForgotComp /> : <></>}
 
         <button
+          onClick={sendRequest}
           type="button"
           className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4  font-medium rounded-lg text-sm px-10 py-2 me-2 mb-2 mt-5  "
         >
