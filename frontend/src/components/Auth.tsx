@@ -21,19 +21,19 @@ try {
       ...authInputes,
     }
   );
-  const jwt:string=response.data
-  console.log("response"+response)
-  localStorage.setItem("Authorization",jwt)
+
+  const jwt=response.data
+  localStorage.setItem("token", jwt.token);
+
   if(response.status !== 200){
     alert("error while signingup")
   }
-  navigate("/blog")  
+  navigate("/blogs")  
 } catch (error) {
   console.log(error)
   alert("error while signing up")
 }
 
-    console.log("Sending request")
   }
 
   return (
@@ -72,7 +72,6 @@ try {
           isPassword={false}
           onChange={(e) => {
             setAuthInputes({ ...authInputes, email: e.target.value });
-            console.log(e.target.value);
           }}
         />
 
