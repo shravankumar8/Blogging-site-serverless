@@ -1,4 +1,4 @@
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { InputComp } from "./InputComp";
 import { useState } from "react";
 import { signinInput, signupInput } from "@shravankumar8/medium-common";
@@ -84,7 +84,7 @@ try {
             setAuthInputes({ ...authInputes, password: e.target.value });
           }}
         />
-        {JSON.stringify(authInputes)}
+      
         {type === "signin" ? <ForgotComp /> : <></>}
 
         <button
