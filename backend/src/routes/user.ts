@@ -23,6 +23,7 @@ userRoute.post("/signup", async (c) => {
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
   const body = await c.req.json();
+  console.log(body);
   const {success}=signupInput.safeParse(body);
   if(!success){
     c.status(400)
@@ -34,6 +35,7 @@ userRoute.post("/signup", async (c) => {
       data: {
         email: body.email,
         password: body.password,
+        name: body.name
       },
     });
 
@@ -41,6 +43,7 @@ userRoute.post("/signup", async (c) => {
     console.log(token);
     return c.json({ message: "user signup succcesfull", token: token });
   } catch (error) {
+    console.log("error"+error)
     
     return c.json({ message: "email already in use " });
   }
