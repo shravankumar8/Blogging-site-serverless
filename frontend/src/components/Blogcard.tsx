@@ -10,7 +10,7 @@ const Blogcard = ({
 }: BlogInputTypes) => {
   const navigate = useNavigate()
   return (
-    <div className="border-b-2">
+    <div className=" mt-2 border-b-2">
       <div
         onClick={() => {
           navigate("/user/" + authorId);
@@ -23,9 +23,12 @@ const Blogcard = ({
 
         <div className="authornamediv text-xs">{authorName}</div>
       </div>
-      <div onClick={()=>{
-        navigate("/blog/"+id)
-      }} className="cursor-pointer">
+      <div
+        onClick={() => {
+          navigate("/blog/" + id);
+        }}
+        className="cursor-pointer"
+      >
         <div className="font-semibold mt-2 px-2 text-sm titlediv">{title}</div>
         <div className=" text-xs text-slate-600 px-2 titlediv">
           {content.slice(0, 200) + "..."}
@@ -47,6 +50,7 @@ const Blogcard = ({
           >
             {Math.ceil(content.length / 350) + " minute(s) of reading"}
           </div>
+          <div className="self-center mt-1 text-xs">⛉</div>
         </div>
       </div>
     </div>
