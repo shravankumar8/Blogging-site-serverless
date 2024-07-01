@@ -77,6 +77,7 @@ const MainBlog = ({ id }: { id: string | undefined }) => {
             <div>
               {Math.ceil(blogInfo.content.length / 350) + " minute(s) of read"}
             </div>
+          
           </div>
         </div>
       </div>
