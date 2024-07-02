@@ -70,7 +70,7 @@ blogRoute.post("/", async (c) => {
   });
 
   console.log(userId + "has published some post");
-  return c.json({ message: "saved the  some post", postId: blog.id });
+  return c.json({ message: "succesfully saved the post", postId: blog.id });
 });
 
 // below route is to update the posts

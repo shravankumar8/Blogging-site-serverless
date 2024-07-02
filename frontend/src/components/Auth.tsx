@@ -14,21 +14,36 @@ export const AuthComp = ({ type }: { type: "signin" | "signup" }) => {
 
   async function sendRequest(){
 try {
+if(type==="signin"){
+  const response: AxiosResponse = await axios.post(
+    `${BACKEND_URL}/api/v1/user/signin`,
+    {
+      ...authInputes,
+    }
+  );
+   const jwt = response.data;
+   localStorage.setItem("token", jwt.token);
 
+   if (response.status !== 200) {
+     alert("error while signingup");
+   }
+   navigate("/blogs");  
+}else{
   const response: AxiosResponse = await axios.post(
     `${BACKEND_URL}/api/v1/user/signup`,
     {
       ...authInputes,
     }
   );
+ const jwt = response.data;
+ localStorage.setItem("token", jwt.token);
 
-  const jwt=response.data
-  localStorage.setItem("token", jwt.token);
-
-  if(response.status !== 200){
-    alert("error while signingup")
-  }
-  navigate("/blogs")  
+ if (response.status !== 200) {
+   alert("error while signingup");
+ }
+ navigate("/blogs");  
+}
+ 
 } catch (error) {
   console.log(error)
   alert("error while signing up")

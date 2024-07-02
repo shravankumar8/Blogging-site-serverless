@@ -6,6 +6,8 @@ import LandingPage from "./pages/LandingPage";
 import Blogs from "./pages/Blogs";
 import Blog from './pages/Blog';
 import Write from './pages/Write';
+import NotFound from "./pages/NotFound";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -17,9 +19,10 @@ function App() {
           <Route path="/" Component={LandingPage} />
           <Route path="blogs" Component={Blogs} />
           <Route path="/blog/write" Component={Write} />
+          <Route path="/profile/me" Component={Profile} />
 
           <Route path="blog/:id" Component={Blog} />
-          {/* <Route path="/*" Component={NotFound} /> */}
+          <Route path="/*" Component={NotFound} />
         </Routes>
       </BrowserRouter>
     </>

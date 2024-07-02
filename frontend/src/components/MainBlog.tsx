@@ -52,7 +52,7 @@ const MainBlog = ({ id }: { id: string | undefined }) => {
   return (
     <div
       id="parentDiv"
-      className="flex flex-col justify-center mx-auto max-w-xl"
+      className="flex flex-col  justify-center mx-auto max-w-xl"
     >
       <div id="titlediv" className="text-4xl font-bold leading-10">
         {blogInfo.title}
@@ -77,13 +77,13 @@ const MainBlog = ({ id }: { id: string | undefined }) => {
             <div>
               {Math.ceil(blogInfo.content.length / 350) + " minute(s) of read"}
             </div>
-          
           </div>
         </div>
       </div>
+     
       <div
         id="content "
-        className="break-keep  font-serif text-base mt-8 font-normal leading-7 indent-8"
+        className="break-keep mb-10  font-serif text-base mt-8 font-normal leading-7 indent-8"
       >
         {blogInfo.content}
       </div>

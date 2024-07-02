@@ -4,9 +4,12 @@ const DashboardNavbar = () => {
   const navigate = useNavigate();
   return (
     <div className="m-2  mx-10  flex justify-between">
-      <div onClick={()=>{
-        navigate("/");
-      }} className="logoDiv cursor-pointer font-sans text-xl  tracking-normal text-black font-extrabold">
+      <div
+        onClick={() => {
+          navigate("/");
+        }}
+        className="logoDiv cursor-pointer font-sans text-xl  tracking-normal text-black font-extrabold"
+      >
         Medium
       </div>
       <div className="navbuttons  hidden sm:flex gap-10 justify-center items-center ">
@@ -27,7 +30,7 @@ const DashboardNavbar = () => {
           </li>
           <li
             onClick={() => {
-              navigate("profile");
+              navigate("/profile/me");
             }}
             className="cursor-pointer border p-1 rounded-lg"
           >
